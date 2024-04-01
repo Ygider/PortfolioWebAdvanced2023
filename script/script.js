@@ -18,6 +18,7 @@ async function getPokemonNames() {
             pokemon.sprite = sprite
             pokemon.type = types
             console.log(pokemon)
+            displayPokemon(pokemon);
             i++;
         }
     } catch (error) {
@@ -51,4 +52,25 @@ async function getPokemonSpriteAndType(url){
         console.error('Error fetching data:', error);
     }
 }
+async function displayPokemon (pokemon){
+    const pokemonContainer = document.getElementById('pokemonContainer');
+    const pokemonElement = document.createElement('div');
+    pokemonElement.classList.add('pokemon');
+
+    const nameElement = document.createElement('p');
+    nameElement.textContent = pokemon.name;
+    pokemonElement.appendChild(nameElement);
+
+    const spriteElement = document.createElement('img');
+    spriteElement.src = pokemon.sprite;
+    pokemonElement.appendChild(spriteElement);
+
+    const typesElement = document.createElement('p');
+    typesElement.textContent = `Type(s): ${pokemon.type.join(', ')}`;
+    pokemonElement.appendChild(typesElement);
+
+    pokemonContainer.appendChild(pokemonElement);
+
+
+} 
 getPokemonNames();
