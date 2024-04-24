@@ -1,3 +1,22 @@
-body {
-    background-color: rgb(132, 56, 56);
+.pokemon {
+    border: 1px solid black;
+    margin-bottom: 20px;
+    padding: 10px;
+    display: inline-block;
+    width: 30%;
+    margin-right: 3%;
+    vertical-align: top;
+    max-width: calc(33% - 20px);
+    box-sizing: border-box;
+}
+#pokemonContainerTop, #pokemonContainerBottom {
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap; 
+    justify-content: space-between;
+
+}
+#pokemonContainerTop .pokemon:last-child, #pokemonContainerBottom .pokemon:last-child {
+    margin-right: 0;
+
 }

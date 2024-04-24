@@ -52,24 +52,21 @@ async function getPokemonSpriteAndType(url){
         console.error('Error fetching data:', error);
     }
 }
-async function displayPokemon (pokemon){
-    const pokemonContainer = document.getElementById('pokemonContainer');
+function displayPokemon (pokemon){
+    const pokemonContainerTop = document.getElementById('pokemonContainerTop');
+    const pokemonContainerBottom = document.getElementById('pokemonContainerBottom');
     const pokemonElement = document.createElement('div');
     pokemonElement.classList.add('pokemon');
-
-    const nameElement = document.createElement('p');
-    nameElement.textContent = pokemon.name;
-    pokemonElement.appendChild(nameElement);
-
-    const spriteElement = document.createElement('img');
-    spriteElement.src = pokemon.sprite;
-    pokemonElement.appendChild(spriteElement);
-
-    const typesElement = document.createElement('p');
-    typesElement.textContent = `Type(s): ${pokemon.type.join(', ')}`;
-    pokemonElement.appendChild(typesElement);
-
-    pokemonContainer.appendChild(pokemonElement);
+    pokemonElement.innerHTML = `
+            <p>${pokemon.name}</p>
+            <img src="${pokemon.sprite}" alt="${pokemon.name}">
+        <p>Type(s): ${pokemon.type.join(', ')}</p>
+    `;
+    if (pokemonContainerTop.childElementCount < 3) {
+        pokemonContainerTop.appendChild(pokemonElement);
+    } else {
+        pokemonContainerBottom.appendChild(pokemonElement);
+    }
 
 
 } 
