@@ -60,8 +60,24 @@ function displayPokemon (pokemon){
     pokemonElement.innerHTML = `
             <p>${pokemon.name}</p>
             <img src="${pokemon.sprite}" alt="${pokemon.name}">
-        <p>Type(s): ${pokemon.type.join(', ')}</p>
     `;
+    const typesElement = document.createElement('div');
+    typesElement.classList.add('types');
+
+    // Display Pokemon type image
+    pokemon.type.forEach(type => {
+        const typeContainer = document.createElement('div');
+        typeContainer.classList.add('type-container');
+
+        const typeImage = document.createElement('img');
+        typeImage.src =` ../pokemonTypes/${type}.avif`;
+        typeImage.alt = type;
+        typeImage.width = 64; // Set width (adjust as needed)
+        typeImage.height = 32; // Set height (adjust as needed)
+        typeContainer.appendChild(typeImage);
+        typesElement.appendChild(typeContainer);
+    });
+    pokemonElement.appendChild(typesElement);
     if (pokemonContainerTop.childElementCount < 3) {
         pokemonContainerTop.appendChild(pokemonElement);
     } else {
