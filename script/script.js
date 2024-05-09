@@ -1,11 +1,18 @@
 async function getPokemonNames() {
+    const pokemonContainerTop = document.getElementById('pokemonContainerTop');
+    const pokemonContainerBottom = document.getElementById('pokemonContainerBottom');
+    const pokemonContainer = document.getElementById('pokemonContainer');
+    pokemonContainerTop.innerHTML = '';
+    pokemonContainerBottom.innerHTML = '';
+    
+    
     try {
         const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=1017');
         const data = await response.json();
         let i=1;
         const shuffledArray = shuffleArray(data.results);
         const firstSix = shuffledArray.slice(0,6);
-        // List of pokémon with as format "number. name"
+        // List of pokémon with format "number. name"
         for (const element of firstSix) {
             let pokemon = {
                 name: '',
@@ -64,7 +71,7 @@ function displayPokemon (pokemon){
     const typesElement = document.createElement('div');
     typesElement.classList.add('types');
 
-    // Display Pokemon type image
+    // Display Pokemon type
     pokemon.type.forEach(type => {
         const typeContainer = document.createElement('div');
         typeContainer.classList.add('type-container');
@@ -72,18 +79,50 @@ function displayPokemon (pokemon){
         const typeImage = document.createElement('img');
         typeImage.src =` ../pokemonTypes/${type}.avif`;
         typeImage.alt = type;
-        typeImage.width = 64; // Set width (adjust as needed)
-        typeImage.height = 32; // Set height (adjust as needed)
+        typeImage.width = 64;
+        typeImage.height = 32;
         typeContainer.appendChild(typeImage);
         typesElement.appendChild(typeContainer);
     });
     pokemonElement.appendChild(typesElement);
+    
     if (pokemonContainerTop.childElementCount < 3) {
         pokemonContainerTop.appendChild(pokemonElement);
     } else {
         pokemonContainerBottom.appendChild(pokemonElement);
     }
+    //BUTTON
+    const button = document.createElement('button');
+    button.textContent = 'Add to my team'; 
+    button.classList.add('pokemon-button'); 
+    button.addEventListener('click', () => {
+        addPokemon(pokemon);
+
+        console.log('Button clicked!');
+        
+    });
+    pokemonElement.appendChild(button);
 
 
 } 
+function addPokemon(pokemon) {
+    
+   if (typeof(Storage) !== "undefined") {
+        
+        let storedPokemon = JSON.parse(localStorage.getItem('pokemonList')) || [];
+        
+        storedPokemon.push(pokemon);
+        
+        localStorage.setItem('pokemonList', JSON.stringify(storedPokemon));
+        console.log(`${pokemon.name} has been added to local storage.`);
+    } else {
+        console.error("Local storage is not supported in this browser.");
+        
+    }
+    //Note to mySelf ADD POPUP "Pokemon added to the team, Chose your next pokemon"
+    getPokemonNames();
+}
+
+
+
 getPokemonNames();

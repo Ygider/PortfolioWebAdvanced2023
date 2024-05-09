@@ -9,6 +9,11 @@
     max-width: calc(33% - 20px);
     box-sizing: border-box;
 }
+.pokemon button {
+    place-items: center;
+    margin-left: 155px;
+    margin-top: 10px;
+}
 #pokemonContainerTop, #pokemonContainerBottom {
     margin-bottom: 20px;
     display: flex;
