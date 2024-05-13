@@ -1,3 +1,22 @@
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleButton = document.getElementById('toggleButton');
+    const pokemonContainer = document.getElementById('pokemonContainer');
+    const pokemonTeam = document.getElementById('pokemonTeam');
+
+    // Add event listener to the toggle button
+    toggleButton.addEventListener('click', function() {
+        // Toggle visibility of the pokemon team
+        if (pokemonContainer.style.display === 'none') {
+            pokemonContainer.style.display = 'block';
+            pokemonTeam.style.display = 'none';
+            toggleButton.textContent = 'Show Pokemon Team';
+        } else {
+            pokemonContainer.style.display = 'none';
+            pokemonTeam.style.display = 'block';
+            toggleButton.textContent = 'Show Pokemon Container';
+        }
+    });
+});
 async function getPokemonNames() {
     const pokemonContainerTop = document.getElementById('pokemonContainerTop');
     const pokemonContainerBottom = document.getElementById('pokemonContainerBottom');
@@ -12,7 +31,7 @@ async function getPokemonNames() {
         let i=1;
         const shuffledArray = shuffleArray(data.results);
         const firstSix = shuffledArray.slice(0,6);
-        // List of pokémon with format "number. name"
+        // List of pokemon with format "number. name"
         for (const element of firstSix) {
             let pokemon = {
                 name: '',
@@ -91,7 +110,7 @@ function displayPokemon (pokemon){
     } else {
         pokemonContainerBottom.appendChild(pokemonElement);
     }
-    //BUTTON
+    //Add to my team BUTTON
     const button = document.createElement('button');
     button.textContent = 'Add to my team'; 
     button.classList.add('pokemon-button'); 
@@ -139,11 +158,11 @@ function removePokemonByName(name) {
     if (typeof(Storage) !== "undefined") {
         let storedPokemon = JSON.parse(localStorage.getItem('pokemonList')) || [];
         
-        // Find index of the pokémon
+        // Find index of the pokemon
         const index = storedPokemon.findIndex(pokemon => pokemon.name === name);
         
         if (index !== -1) {
-            // Remove the pokémon from the array
+            // Remove the pokemon from the array
             storedPokemon.splice(index, 1);
             // Update local storage with the modified list
             localStorage.setItem('pokemonList', JSON.stringify(storedPokemon));
@@ -155,9 +174,49 @@ function removePokemonByName(name) {
         console.error("Local storage is not supported in this browser.");
     }
 }
+function displayStoredPokemon() {
+    const storedPokemon = JSON.parse(localStorage.getItem('pokemonList')) || [];
+
+    storedPokemon.forEach(pokemon => {
+        const pokemonTeamTop = document.getElementById('pokemonTeamTop');
+        const pokemonTeamBottom = document.getElementById('pokemonTeamBottom');
+        const pokemonElement = document.createElement('div');
+        pokemonElement.classList.add('pokemon');
+        pokemonElement.innerHTML = `
+            <p>${pokemon.name}</p>
+            <img src="${pokemon.sprite}" alt="${pokemon.name}">
+        `;
+        const typesElement = document.createElement('div');
+        typesElement.classList.add('types');
+
+        // Display Pokemon type
+        pokemon.type.forEach(type => {
+            const typeContainer = document.createElement('div');
+            typeContainer.classList.add('type-container');
+
+            const typeImage = document.createElement('img');
+            typeImage.src =`../pokemonTypes/${type}.avif`;
+            typeImage.alt = type;
+            typeImage.width = 64;
+            typeImage.height = 32;
+            typeContainer.appendChild(typeImage);
+            typesElement.appendChild(typeContainer);
+        });
+        pokemonElement.appendChild(typesElement);
+
+        // Display 3 on Top and 3 bottom
+        if (pokemonTeamTop.childElementCount < 3) {
+            pokemonTeamTop.appendChild(pokemonElement);
+        } else {
+            pokemonTeamBottom.appendChild(pokemonElement);
+        }
+    });
+}
 
 
 
 
 getPokemonNames();
-removePokemonByName('pikachu');
+displayStoredPokemon();
+//test removePokemonByName
+//removePokemonByName('pikachu');
