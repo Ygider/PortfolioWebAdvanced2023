@@ -110,7 +110,12 @@ function addPokemon(pokemon) {
    if (typeof(Storage) !== "undefined") {
         
         let storedPokemon = JSON.parse(localStorage.getItem('pokemonList')) || [];
-        
+        if (storedPokemon.length >= 6) {
+            console.log("Too many pokémons");
+            return false;
+            //Note to myself, add pop up to show the full team
+        }
+
         storedPokemon.push(pokemon);
         
         localStorage.setItem('pokemonList', JSON.stringify(storedPokemon));
@@ -122,7 +127,37 @@ function addPokemon(pokemon) {
     //Note to mySelf ADD POPUP "Pokemon added to the team, Chose your next pokemon"
     getPokemonNames();
 }
+function RemovePokemonTeam() {
+    if (typeof(Storage) !== "undefined") {
+        localStorage.removeItem('pokemonList');
+        console.log('Pokémon team has been refreshed.');
+    } else {
+        console.error("Local storage is not supported in this browser.");
+    }
+}
+function removePokemonByName(name) {
+    if (typeof(Storage) !== "undefined") {
+        let storedPokemon = JSON.parse(localStorage.getItem('pokemonList')) || [];
+        
+        // Find index of the pokémon
+        const index = storedPokemon.findIndex(pokemon => pokemon.name === name);
+        
+        if (index !== -1) {
+            // Remove the pokémon from the array
+            storedPokemon.splice(index, 1);
+            // Update local storage with the modified list
+            localStorage.setItem('pokemonList', JSON.stringify(storedPokemon));
+            console.log(`Pokemon with name ${name} has been removed from local storage.`);
+        } else {
+            console.log(`Pokemon with name ${name} not found in local storage.`);
+        }
+    } else {
+        console.error("Local storage is not supported in this browser.");
+    }
+}
+
 
 
 
 getPokemonNames();
+removePokemonByName('pikachu');
