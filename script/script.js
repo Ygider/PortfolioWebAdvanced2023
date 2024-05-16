@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
             pokemonTeam.style.display = 'none';
             toggleButton.textContent = 'Show Pokemon Team';
         } else {
+            displayStoredPokemon();
             pokemonContainer.style.display = 'none';
             pokemonTeam.style.display = 'block';
             toggleButton.textContent = 'Show Pokemon Container';
@@ -176,11 +177,13 @@ function removePokemonByName(name) {
 }
 function displayStoredPokemon() {
     const storedPokemon = JSON.parse(localStorage.getItem('pokemonList')) || [];
+    pokemonTeamTop.innerHTML = '';
+    pokemonTeamBottom.innerHTML = '';
 
     storedPokemon.forEach(pokemon => {
-        const pokemonTeamTop = document.getElementById('pokemonTeamTop');
-        const pokemonTeamBottom = document.getElementById('pokemonTeamBottom');
-        const pokemonElement = document.createElement('div');
+    const pokemonTeamTop = document.getElementById('pokemonTeamTop');
+    const pokemonTeamBottom = document.getElementById('pokemonTeamBottom');
+    const pokemonElement = document.createElement('div');
         pokemonElement.classList.add('pokemon');
         pokemonElement.innerHTML = `
             <p>${pokemon.name}</p>
@@ -203,6 +206,16 @@ function displayStoredPokemon() {
             typesElement.appendChild(typeContainer);
         });
         pokemonElement.appendChild(typesElement);
+
+        // Remove button
+        const removeButton = document.createElement('button');
+        removeButton.textContent = 'Remove';
+        removeButton.id = pokemon.name;
+        removeButton.addEventListener('click', function() {
+            removePokemonByName(pokemon.name);
+            displayStoredPokemon();
+        });
+        pokemonElement.appendChild(removeButton);
 
         // Display 3 on Top and 3 bottom
         if (pokemonTeamTop.childElementCount < 3) {
