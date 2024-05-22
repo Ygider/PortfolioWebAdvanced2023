@@ -14,14 +14,13 @@ document.addEventListener('DOMContentLoaded', function() {
             displayStoredPokemon();
             pokemonContainer.style.display = 'none';
             pokemonTeam.style.display = 'block';
-            toggleButton.textContent = 'Show Pokemon Container';
+            toggleButton.textContent = 'Chose Pokemon';
         }
     });
 });
 async function getPokemonNames() {
     const pokemonContainerTop = document.getElementById('pokemonContainerTop');
     const pokemonContainerBottom = document.getElementById('pokemonContainerBottom');
-    const pokemonContainer = document.getElementById('pokemonContainer');
     pokemonContainerTop.innerHTML = '';
     pokemonContainerBottom.innerHTML = '';
     
