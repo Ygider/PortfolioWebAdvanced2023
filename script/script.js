@@ -114,6 +114,7 @@ function displayPokemon (pokemon){
     //Add to my team BUTTON
     const button = document.createElement('button');
     button.textContent = 'Add to my team'; 
+    button.className="btn btn-success";
     button.classList.add('pokemon-button'); 
     button.addEventListener('click', () => {
         addPokemon(pokemon);
@@ -135,11 +136,11 @@ function addPokemon(pokemon) {
             return false;
             //Note to myself, add pop up to show the full team
         }
-
-        storedPokemon.push(pokemon);
-        
-        localStorage.setItem('pokemonList', JSON.stringify(storedPokemon));
-        console.log(`${pokemon.name} has been added to local storage.`);
+        else{
+            storedPokemon.push(pokemon);
+            localStorage.setItem('pokemonList', JSON.stringify(storedPokemon));
+            console.log(`${pokemon.name} has been added to local storage.`);
+        }
     } else {
         console.error("Local storage is not supported in this browser.");
         
@@ -211,6 +212,7 @@ function displayStoredPokemon() {
         const removeButton = document.createElement('button');
         removeButton.textContent = 'Remove';
         removeButton.id = pokemon.name;
+        removeButton.className= "btn btn-danger";
         removeButton.addEventListener('click', function() {
             removePokemonByName(pokemon.name);
             displayStoredPokemon();
