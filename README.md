@@ -10,23 +10,28 @@
     Elementen selecteren
 
 ## Elementen manipuleren
-script.jss 
+script.js
     - toggleButton.addEventListener
     - async function getPokemonNames()
     - function displayPokemon()
     - function displayStoredPokemon()
 
 ## Event aan een element koppelen
-script.jss
+script.js
     - toggleButton.addEventListener
     - async function getPokemonNames()
     - function displayPokemon()
     - function displayStoredPokemon()
 
 ## Formulier valideren
+script.js
+ - async function searchPokemonByName(pokemonName)
+
+https://www.youtube.com/watch?v=ZZ595vQcKmA&list=PLGsnrfn8XzXii2J5-Jpqufypu6upxcSGx&index=17&ab_channel=MikeDerycke
+
 
 ## Gebruiken van een constante
-script.jss
+script.js
     - const toggleButton = document.getElementById('toggleButton');
     - const pokemonContainer = document.getElementById('pokemonContainer');
     - const pokemonTeam = document.getElementById('pokemonTeam');
@@ -37,7 +42,7 @@ script.jss
         const shuffledArray = shuffleArray(data.results);
         const fir.stSix = shuffledArray.slice(0,6);
 ## Gebruiken van template literals
-script.jss
+script.js
     - function displayPokemon()
         - pokemonElement.innerHTML = `
              <p>${pokemon.name}</p>
@@ -71,18 +76,114 @@ scrip.js
             - pokemon.type.forEach
             - removeButton.id = pokemon.name;
             - removePokemonByName(pokemon.name);
-            
 ## Spread & Rest operator
-## Iteration over een array
-## Arrow function
-## Callback function
-## Promise
-## Consumer methods
-## Async & Await
-## Self executing function
-## Fetch om data op te halen
-## JSON manipuleren en weergeven
-## Basis CSS Animatie
-## Gebruiken van een flexbox of CSS grid
-## Gebruik van LocalStorage
+script.js
+Spread => function shuffleArray(array)
 
+Rest => function addPokemon(...pokemons)
+## Iteration over een array
+script.js
+    - const firstSix = shuffledArray.slice(0,6);
+        // List of pokemon with format "number. name"
+        for (const element of firstSix) {
+            let pokemon = {
+                name: '',
+                sprite: '',
+                type: []
+            }
+            pokemon.name = element.name
+            const url = element.url;
+            const {sprite, types} = await getPokemonSpriteAndType(url)
+            pokemon.sprite = sprite
+            pokemon.type = types
+            console.log(pokemon)
+            displayPokemon(pokemon);
+            i++;
+        }
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
+    - function displayedStoredPokemon()
+        - pokemon.type.forEach(type => {
+            const typeContainer = document.createElement('div');
+            typeContainer.classList.add('type-container');
+
+            const typeImage = document.createElement('img');
+            typeImage.src =`../pokemonTypes/${type}.avif`;
+            typeImage.alt = type;
+            typeImage.width = 64;
+            typeImage.height = 32;
+            typeContainer.appendChild(typeImage);
+            typesElement.appendChild(typeContainer);
+        });
+## Arrow function
+script.js
+- toggleButton.addEventListener('click', () => )
+- button.addEventListener('click', () => )
+- document.getElementById('searchButton').addEventListener('click', (e) => 
+## Callback function
+script.js
+- document.addEventListener('DOMContentLoaded', function())
+- toggleButton.addEventListener('click', function())
+- button.addEventListener('click', function() )
+- removeButton.addEventListener('click', function())
+- document.getElementById('searchButton').addEventListener('click',    function(e))
+## Promise
+script.js
+ - const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=1017');
+  const data = await response.json();
+
+## Consumer methods
+script.js
+## Async & Await
+script.js
+ - async function getPokemonSpriteAndType(url)
+  - const response = await fetch(url);
+    const data = await response.json();
+## Self executing function
+script.js
+(function startUp() {
+    getPokemonNames();
+    }())
+## Fetch om data op te halen
+script.js
+- const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=1017');
+- const response = await fetch(url);
+- const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`);
+
+## JSON manipuleren en weergeven
+script.js
+- const data = await response.json();
+
+## Basis CSS Animatie
+Css transitions solutions from canvas ehb
+script.js
+id = removeAnimation
+id = addAnimation
+id = toggleButton
+
+
+## Gebruiken van een flexbox of CSS grid
+script.js
+
+
+## Gebruik van LocalStorage
+script.js
+    - function addPokemon(pokemon)
+        - if (typeof(Storage) !== "undefined") {
+        
+        let storedPokemon = JSON.parse(localStorage.getItem('pokemonList')) || [];
+        if (storedPokemon.length >= 6) {
+            console.log("Too many pokémons");
+            return false;
+            //Note to myself, add pop up to show the full team
+        }
+        else{
+            storedPokemon.push(pokemon);
+            localStorage.setItem('pokemonList', JSON.stringify(storedPokemon));
+            console.log(`${pokemon.name} has been added to local storage.`);
+        }
+    } else {
+        console.error("Local storage is not supported in this browser.");
+        
+    }

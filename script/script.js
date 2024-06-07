@@ -18,6 +18,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+(function startUp() {
+    getPokemonNames();
+    }())
 async function getPokemonNames() {
     const pokemonContainerTop = document.getElementById('pokemonContainerTop');
     const pokemonContainerBottom = document.getElementById('pokemonContainerBottom');
@@ -50,13 +54,14 @@ async function getPokemonNames() {
     } catch (error) {
         console.error('Error fetching data:', error);
     }
-}
+};
 function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
+    const newArray = [...array];
+    for (let i = newArray.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
+        [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
     }
-    return array;
+    return newArray;
 }
 async function getPokemonSpriteAndType(url){
     try {
@@ -111,10 +116,13 @@ function displayPokemon (pokemon){
         pokemonContainerBottom.appendChild(pokemonElement);
     }
     //Add to my team BUTTON
-    const button = document.createElement('button');
-    button.textContent = 'Add to my team'; 
-    button.className="btn btn-success";
+    const button = document.createElement('div');
+    const a = document.createElement('a');
+    button.appendChild(a);
+    a.textContent = 'Add to my team'; 
+    button.className="addAnimation";
     button.classList.add('pokemon-button'); 
+
     button.addEventListener('click', () => {
         addPokemon(pokemon);
 
@@ -125,28 +133,22 @@ function displayPokemon (pokemon){
 
 
 } 
-function addPokemon(pokemon) {
-    
-   if (typeof(Storage) !== "undefined") {
-        
+function addPokemon(...pokemons) {
+    if (typeof(Storage) !== "undefined") {
         let storedPokemon = JSON.parse(localStorage.getItem('pokemonList')) || [];
-        if (storedPokemon.length >= 6) {
-            console.log("Too many pokémons");
+        if (storedPokemon.length + pokemons.length > 6) {
+            alert("Adding these Pokémon would exceed the team limit");
             return false;
-            //Note to myself, add pop up to show the full team
         }
-        else{
-            storedPokemon.push(pokemon);
-            localStorage.setItem('pokemonList', JSON.stringify(storedPokemon));
-            console.log(`${pokemon.name} has been added to local storage.`);
-        }
+        storedPokemon = [...storedPokemon, ...pokemons];
+        localStorage.setItem('pokemonList', JSON.stringify(storedPokemon));
+        pokemons.forEach(pokemon => console.log(`${pokemon.name} has been added to local storage.`));
     } else {
         console.error("Local storage is not supported in this browser.");
-        
     }
-    //Note to mySelf ADD POPUP "Pokemon added to the team, Chose your next pokemon"
     getPokemonNames();
 }
+
 function RemovePokemonTeam() {
     if (typeof(Storage) !== "undefined") {
         localStorage.removeItem('pokemonList');
@@ -208,10 +210,13 @@ function displayStoredPokemon() {
         pokemonElement.appendChild(typesElement);
 
         // Remove button
-        const removeButton = document.createElement('button');
-        removeButton.textContent = 'Remove';
-        removeButton.id = pokemon.name;
-        removeButton.className= "btn btn-danger";
+        const removeButton = document.createElement('div');
+        const a = document.createElement('a');
+        removeButton.appendChild(a);
+        a.textContent = 'remove from my team'; 
+        removeButton.className="removeAnimation";
+        removeButton.classList.add('pokemon-button'); 
+
         removeButton.addEventListener('click', function() {
             removePokemonByName(pokemon.name);
             displayStoredPokemon();
@@ -227,10 +232,35 @@ function displayStoredPokemon() {
     });
 }
 
+async function searchPokemonByName(pokemonName){
+    let searchDisplay = document.getElementById("searchPokemon");
+    searchDisplay.innerHTML = '';
 
-
-
-getPokemonNames();
+    try {
+    const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`);
+    const data = await response.json();
+    console.log(data.sprites.other["official-artwork"].front_default);
+    let pokemon = {
+        name: '',
+        sprite: data.sprites.other["official-artwork"].front_default,
+        type: []
+    }
+    const searchPokemon = document.createElement('img');
+    searchPokemon.src = pokemon.sprite;
+    searchDisplay.appendChild(searchPokemon);
+    }
+    catch (error){
+        alert('Pokemon not found');
+        console.log('Error fetching data:', error);
+    }
+  }
+// Button search Pokemon by name
+document.getElementById('searchButton').addEventListener('click', function(e) {
+    e.preventDefault();
+    const pokemonName = document.getElementById('searchInput').value.toLowerCase();
+    searchPokemonByName(pokemonName);
+    return
+  });
 displayStoredPokemon();
 //test removePokemonByName
 //removePokemonByName('pikachu');

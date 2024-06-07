@@ -12,13 +12,26 @@
     <div id="app">
         <div id="Frontpage">
             <h1>Welcome to the Pokemon Team Maker</h1> 
-            <p> For veteran players use the Pokemon Team maker to build a random team by choosing one pokemon between six until u got your team of six pokemon.
-                By clicking on the show pokemon team button u will be able to see the state of ur team and remove a pokemon in case u misclicked.
-                At the end a pop up will show you your team and u will be able to remove a pokemon or download a screenshot of it.
-            </p>
+            <p> Welcome, young trainer. <br>
+                This is a tool for helping you generate a Pokémon team randomly. This team maker will generate 6 Pokémon from different regions and u have to chose one of them. Repeat until you got your team. <br>The goal is to find a new use for your Pokémon stored in your Pokémon Home. When was the last time you brought out your Pidgeot? Or your Nidoking? 
+                <br>You will have a chance to bring out your most forgotten Pokémon thanks to our Pokémon team maker.
+                Did the Pokémon team maker generate a Pokémon you don't have? <br>No problem. You can either remove it from the team and try again, or launch the Pokémon game to catch it and bring it to your Pokémon Home.<br>
+                In what context can you use this randomly generated team? Challenge the Elite Four of the Pokémon game of your choice again with this team, or challenge your friends to generate their own teams using the Pokémon team maker and face your team.<br>
+                I hope this tool will give a second life to some of your Pokémon.</p>
 
         </div>
-        <button id="toggleButton" class="btn btn-info">Show Pokemon Team</button>
+        <!-- Search Pokemon By name-->
+        <div id="searchByName">
+        <nav class="navbar navbar-light bg-light">
+            <form class="form-inline">
+              <input id="searchInput" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+              <button id="searchButton" class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form>
+          </nav>
+          </div>
+          <div id="searchPokemon">
+          </div>
+        <button id="toggleButton" class="animation">Show Pokemon Team</button>
         <div id="pokemonContainer">
             <div id="pokemonContainerTop"></div>
             <div id="pokemonContainerBottom"></div>
